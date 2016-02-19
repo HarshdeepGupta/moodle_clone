@@ -77,7 +77,7 @@ public class home extends AppCompatActivity
         final Context context = getApplicationContext();
         final int duration = Toast.LENGTH_LONG;
 
-        serverAddress = "http://192.168.0.103:8000";
+        serverAddress = ((Globals) this.getApplication()).getServerAddress();;
         myQueue = Volley.newRequestQueue(this);
 
 
@@ -199,5 +199,17 @@ public class home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void navDrawerClickListener(View view) {
+
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(getApplicationContext(), "Success !", duration);
+        toast.show();
+
+        Log.i("hagga","Here7");
+
+
     }
 }

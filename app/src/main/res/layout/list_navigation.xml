@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:padding="5dp"
             android:layout_margin="10dp"
+            android:text="Field 1"
 
             />
 
@@ -49,6 +50,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
+            android:text="Field 2"
 
             />
         </LinearLayout>

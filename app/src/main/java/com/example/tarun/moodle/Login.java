@@ -104,7 +104,12 @@ public class Login extends AppCompatActivity {
         });
         */
 
-        serverAddress = "http://192.168.0.106:8000";
+
+        ((Globals) this.getApplication()).setServerAddress("http://192.168.0.106:8000");
+
+        serverAddress = ((Globals) this.getApplication()).getServerAddress();
+        Log.i("hagga", serverAddress);
+
         myQueue = Volley.newRequestQueue(this);
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);

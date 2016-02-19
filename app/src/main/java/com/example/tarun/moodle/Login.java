@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.provider.DocumentsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
@@ -44,6 +45,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 
 import java.net.CookieHandler;
@@ -99,7 +104,7 @@ public class Login extends AppCompatActivity {
         });
         */
 
-        serverAddress = "http://192.168.0.106:8000";
+        serverAddress = "http://192.168.0.103:8000";
         myQueue = Volley.newRequestQueue(this);
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
@@ -158,8 +163,33 @@ public class Login extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
 
-                    notification_array = response.getJSONArray("notifications");
-                    Log.i("hagga","callsuccess");
+                    notification_array = new JSONArray();
+                    JSONArray notify = response.getJSONArray("notifications");
+
+                    for (int i=0;i<notify.length();i++){
+
+                        JSONObject object = new JSONObject();
+                        String created = notify.getJSONObject(i).getString("created_at");
+                        String description = notify.getJSONObject(i).getString("description");
+                        String name,course;
+                        String thread_link;
+                        Document doc = Jsoup.parse(description);
+                        org.jsoup.select.Elements links = doc.select("a");
+
+
+                        name = links.get(0).text();
+                        course = links.get(2).text();
+                        thread_link = links.get(1).toString();
+
+
+                        object.put("created_at", created);
+                        object.put("course", course);
+                        object.put("name", name);
+                        object.put("thread_link",thread_link);
+
+                        notification_array.put(object);
+
+                    }
                     successCallback();
                 } catch (JSONException e) {
                     e.printStackTrace();

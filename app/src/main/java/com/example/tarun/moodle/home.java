@@ -1,5 +1,6 @@
 package com.example.tarun.moodle;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,19 +58,26 @@ public class home extends AppCompatActivity
         String[] course_array = userinfo.getStringArray("COURSE_LIST");
         String notification;
         notification = userinfo.getString("NOTIFICATION_LIST");
-        try{
-            JSONArray notification_list = new JSONArray(notification);
+        JSONArray notificationlist = null;
+        try {
+            notificationlist = new JSONArray(notification);
 
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        //--------------parse notification_list-------------//
+
+
+        //---------to contain the full description----------------//
 
         /*--------------------Networking--------------------------*/
 
         final Context context = getApplicationContext();
         final int duration = Toast.LENGTH_LONG;
 
-        serverAddress = "http://192.168.0.106:8000";
+        serverAddress = "http://192.168.0.103:8000";
         myQueue = Volley.newRequestQueue(this);
 
 
@@ -103,6 +113,9 @@ public class home extends AppCompatActivity
         //mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 
+        ListView notification_listview = (ListView) findViewById(R.id.notification_list_drawer);
+        notification_listview.setAdapter(new NotificationAdapter(this, notificationlist));
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -113,10 +126,12 @@ public class home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         //To show user name and entry number in the navigation Drawer
         TextView name = (TextView) findViewById(R.id.nav_header_name);
         TextView entry = (TextView) findViewById(R.id.nav_header_entry);
+
+
+
 
         /*
         name.setText(username);
@@ -125,9 +140,6 @@ public class home extends AppCompatActivity
         Log.i("hagga", "here8");
         /*
         /*------------------Initialize UI--------------------------*/
-
-
-
     }
 
 

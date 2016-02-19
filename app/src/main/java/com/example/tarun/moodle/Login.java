@@ -104,12 +104,12 @@ public class Login extends AppCompatActivity {
         });
         */
 
-        serverAddress = "http://192.168.0.103:8000";
+        serverAddress = "http://192.168.0.106:8000";
         myQueue = Volley.newRequestQueue(this);
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
-        user.setText("cs1110200");
-        pass.setText("john");
+        user.setText("cs5110281");
+        pass.setText("jasmeet");
 
     }
 
@@ -177,9 +177,10 @@ public class Login extends AppCompatActivity {
                         org.jsoup.select.Elements links = doc.select("a");
 
 
+
                         name = links.get(0).text();
                         course = links.get(2).text();
-                        thread_link = links.get(1).toString();
+                        thread_link = links.get(1).attr("href");
 
 
                         object.put("created_at", created);

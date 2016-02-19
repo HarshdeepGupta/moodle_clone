@@ -31,6 +31,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.tarun.moodle.Login" />
         </activity>
+        <activity
+            android:name=".ThreadDetails"
+            android:label="@string/title_activity_thread_details"
+            android:parentActivityName=".home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.tarun.moodle.home" />
+        </activity>
     </application>
 
 </manifest>

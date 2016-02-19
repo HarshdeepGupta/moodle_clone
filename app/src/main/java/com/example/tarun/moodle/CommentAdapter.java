@@ -1,38 +1,36 @@
 package com.example.tarun.moodle;
 
-import android.app.Activity;
 import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
- * Created by tarun on 18/2/16.
+ * Created by tarun on 19/2/16.
  */
-public class NotificationAdapter extends BaseAdapter {
+public class CommentAdapter extends BaseAdapter{
 
     private Context mycontext;
     private JSONArray myarray;
     private LayoutInflater mLayoutInflater = null;
 
 
-    NotificationAdapter() {
+    CommentAdapter() {
         mycontext = null;
         myarray = null;
 
     }
 
-    public NotificationAdapter(Context c,JSONArray notifications) {
+    public CommentAdapter(Context c,JSONArray comment) {
         mycontext = c;
-        myarray = notifications;
+        myarray = comment;
 
     }
 
@@ -53,6 +51,7 @@ public class NotificationAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        Log.i("hagga",String.valueOf(myarray.length()));
         return myarray.length();
     }
 
@@ -65,6 +64,7 @@ public class NotificationAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int arg) {
+
         return arg;
     }
 
@@ -72,27 +72,29 @@ public class NotificationAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent){
 
         View myview = view;
+
+
         if(myview==null) {
             LayoutInflater inflater = (LayoutInflater) mycontext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            myview = (View) inflater.inflate(R.layout.list_navigation, null);
+            myview = (View) inflater.inflate(R.layout.list_comments, null);
 
         }
-        TextView name = (TextView) myview.findViewById(R.id.notification_person_name);
-        TextView date=(TextView) myview.findViewById(R.id.notification_person_date);
-        TextView course = (TextView) myview.findViewById(R.id.notification_course);
-
+        TextView name = (TextView) myview.findViewById(R.id.thread_comment_name);
+        TextView date=(TextView) myview.findViewById(R.id.thread_comment_date);
+        TextView comment_description = (TextView) myview.findViewById(R.id.thread_comment);
+        comment_description.setMovementMethod(new ScrollingMovementMethod());
 
         try {
-            name.setText(myarray.getJSONObject(position).getString("name"));
-            date.setText(myarray.getJSONObject(position).getString("created_at"));
-            course.setText(myarray.getJSONObject(position).getString("course"));
-
+            name.setText(myarray.getJSONObject(position).getString("comment_name"));
+            date.setText(myarray.getJSONObject(position).getString("comment_created"));
+            comment_description.setText(myarray.getJSONObject(position).getString("comment_description"));
 
         }catch (JSONException e) {
             e.printStackTrace();
         }
-            return myview;
+        return myview;
 
     }
+
 }

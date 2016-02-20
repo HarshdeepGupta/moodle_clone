@@ -93,22 +93,12 @@ public class Login extends AppCompatActivity {
 
         manager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
 
 
-        ((Globals) this.getApplication()).setServerAddress("http://192.168.0.106:8000");
+        ((Globals) this.getApplication()).setServerAddress("http://tapi.cse.iitd.ernet.in:1805");
 
         serverAddress = ((Globals) this.getApplication()).getServerAddress();
-        Log.i("hagga", serverAddress);
+        //Log.i("hagga", serverAddress);
 
         myQueue = Volley.newRequestQueue(this);
         user = (EditText) findViewById(R.id.username);

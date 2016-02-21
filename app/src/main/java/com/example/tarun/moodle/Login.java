@@ -50,14 +50,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-
+import android.content.SharedPreferences;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 
 
 
@@ -71,6 +70,9 @@ public class Login extends AppCompatActivity {
     String last_name;
     String entry_number;
     static boolean proceed;
+
+    public static final String MyPREFERENCES = "MyPrefs";
+    SharedPreferences sharedpreferences;
 
     EditText user ;
     EditText pass ;
@@ -103,6 +105,11 @@ public class Login extends AppCompatActivity {
         myQueue = ((Globals) this.getApplication()).getVolleyQueue();
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
+
+
+        //remembers the current login status
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         user.setText("cs5110281");
         pass.setText("jasmeet");
 
@@ -287,6 +294,9 @@ public class Login extends AppCompatActivity {
         bundle.putString("ENTRY_NUMBER", entry_number);
         bundle.putStringArray("COURSE_LIST", course_array);
         bundle.putString("NOTIFICATION_LIST", notification_array.toString());
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
         intent.putExtras(bundle);
         startActivity(intent);
         //finish(); Dont use this

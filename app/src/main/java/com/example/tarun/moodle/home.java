@@ -18,12 +18,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+
+
 
 public class home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -132,6 +136,10 @@ public class home extends AppCompatActivity
 //        TextView entry = (TextView) findViewById(R.id.nav_header_entry);
 
 
+        //remembers the app current status
+        //restores session on app closure
+        SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
 
 
     }

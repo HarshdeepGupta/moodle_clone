@@ -95,12 +95,12 @@ public class Login extends AppCompatActivity {
 
 
 
-        ((Globals) this.getApplication()).setServerAddress("http://tapi.cse.iitd.ernet.in:1805");
+        ((Globals) this.getApplication()).setServerAddress("http://192.168.0.106:8000");
 
         serverAddress = ((Globals) this.getApplication()).getServerAddress();
         //Log.i("hagga", serverAddress);
 
-        myQueue = Volley.newRequestQueue(this);
+        myQueue = ((Globals) this.getApplication()).getVolleyQueue();
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
         user.setText("cs5110281");
@@ -130,6 +130,7 @@ public class Login extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Click Listener for login button
     public void login_method(View view){
 
         final Context context = getApplicationContext();
@@ -267,7 +268,7 @@ public class Login extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(context, "Error1" + error.getMessage(), duration);
+                Toast toast = Toast.makeText(context, "Error in 1st request : " + error.getMessage(), duration);
                 toast.show();
             }
         }) ;

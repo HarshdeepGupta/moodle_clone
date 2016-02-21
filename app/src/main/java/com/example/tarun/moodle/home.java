@@ -46,7 +46,7 @@ public class home extends AppCompatActivity
         String userentry = userinfo.getString("ENTRY_NUMBER");
 
         //Parsing the course array and the notifications array
-        String[] course_array = userinfo.getStringArray("COURSE_LIST");
+        final String[] course_array = userinfo.getStringArray("COURSE_LIST");
         String notification;
         notification = userinfo.getString("NOTIFICATION_LIST");
         JSONArray notificationlist = null;
@@ -71,7 +71,7 @@ public class home extends AppCompatActivity
 
         serverAddress = ((Globals) this.getApplication()).getServerAddress();;
 
-        myQueue = Volley.newRequestQueue(this);
+        myQueue = ((Globals) this.getApplication()).getVolleyQueue();
 
         //populate the listview in the drawer layout with the course list
 
@@ -95,8 +95,10 @@ public class home extends AppCompatActivity
                 // update selected item and title, then close the drawer
 
 
-                
+
                 Intent intent = new Intent(context, CoursePage.class);
+                intent.putExtra("CourseCode",course_array[position]);
+                Log.i("hagga","Starting Course Activity");
 
                 startActivity(intent);
 
@@ -126,8 +128,8 @@ public class home extends AppCompatActivity
 
 
         //To show user name and entry number in the navigation Drawer
-        TextView name = (TextView) findViewById(R.id.nav_header_name);
-        TextView entry = (TextView) findViewById(R.id.nav_header_entry);
+        TextView name = (TextView) findViewById(R.id.nav_header_username);
+//        TextView entry = (TextView) findViewById(R.id.nav_header_entry);
 
 
 

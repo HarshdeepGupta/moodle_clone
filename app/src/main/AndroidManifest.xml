@@ -27,14 +27,15 @@
             android:name=".home"
             android:label="@string/title_activity_home"
             android:parentActivityName=".Login"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.tarun.moodle.Login" />
         </activity>
         <activity
             android:name=".ThreadDetails"
-            android:label="@string/title_activity_thread_details"
+            android:label="thread_details"
             android:parentActivityName=".home"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -43,7 +44,7 @@
         </activity>
         <activity
             android:name=".CoursePage"
-            android:label="@string/title_activity_course_page"
+            android:label="course_page"
             android:parentActivityName=".home"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

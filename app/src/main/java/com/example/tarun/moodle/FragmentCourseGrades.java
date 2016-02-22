@@ -16,6 +16,7 @@ public class FragmentCourseGrades extends Fragment {
 
     private ListView listView;
     JSONObject grades_data;
+    CourseGradesAdapter adapter;
 
     public FragmentCourseGrades() {
     }
@@ -44,7 +45,7 @@ public class FragmentCourseGrades extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.course_grades_list_view);
 
-        CourseGradesAdapter adapter = new CourseGradesAdapter(this.getContext(), grades_data);
+        adapter = new CourseGradesAdapter(this.getContext(), grades_data);
 
         listView.setAdapter(adapter);
 

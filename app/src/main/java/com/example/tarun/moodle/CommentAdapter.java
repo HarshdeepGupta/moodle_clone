@@ -77,7 +77,7 @@ public class CommentAdapter extends BaseAdapter{
         if(myview==null) {
             LayoutInflater inflater = (LayoutInflater) mycontext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            myview = (View) inflater.inflate(R.layout.list_comments, null);
+            myview = inflater.inflate(R.layout.list_comments, null);
 
         }
         TextView name = (TextView) myview.findViewById(R.id.thread_comment_name);

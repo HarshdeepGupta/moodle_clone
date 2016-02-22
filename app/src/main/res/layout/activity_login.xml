@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation = "vertical"
     tools:context="com.example.tarun.moodle.Login"
-    android:background="#6666ff">
+    android:background="#222222">
 
 
     <android.support.design.widget.AppBarLayout
@@ -19,7 +19,7 @@
             android:id="@+id/toolbar_login"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#0000FF"
+            android:background="#66c904"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:elevation="8dp"/>
 
@@ -57,6 +57,7 @@
         android:textSize="20dp"
         android:textColor="#000000"
         android:background="#ffffff"
+        android:padding="5dp"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="35dp"
         android:layout_marginLeft="35dp"
@@ -67,6 +68,7 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:gravity="center"
+        android:padding="5dp"
 
         android:textSize="20dp"
         android:textColor="#000000"
@@ -74,18 +76,20 @@
         android:layout_marginBottom="20dp"
         android:layout_marginRight="35dp"
         android:layout_marginLeft="35dp"
+
         />
-    <Button
-        android:id = "@+id/signin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="login_method"
-        android:text="Sign In"
-        android:gravity="center"
-        android:layout_margin="8dp"
-        android:textSize="20dp"
-        android:elevation="4dp"
-        />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="login_method"
+            android:text="Sign In"
+            android:gravity="center"
+            android:layout_margin="8dp"
+            android:textSize="20dp"
+            android:padding="5dp"
+            android:elevation="4dp" />
 
     </LinearLayout>
 </LinearLayout>

@@ -97,7 +97,7 @@ public class Login extends AppCompatActivity {
 
 
 
-        ((Globals) this.getApplication()).setServerAddress("http://192.168.0.106:8000");
+        ((Globals) this.getApplication()).setServerAddress("http://192.168.0.117:8000");
 
         serverAddress = ((Globals) this.getApplication()).getServerAddress();
         //Log.i("hagga", serverAddress);

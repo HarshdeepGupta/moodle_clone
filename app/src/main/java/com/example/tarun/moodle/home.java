@@ -17,11 +17,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.content.SharedPreferences;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,11 @@ public class home extends AppCompatActivity
     static String serverAddress;
     static RequestQueue myQueue;
     Button logout = null;
+
+    private JSONObject assignment_data;
+    private JSONObject threads_data;
+    private JSONObject grades_data;
+    private String assignmentUrl,threadsUrl,gradesUrl;
 
 
 
@@ -89,29 +97,99 @@ public class home extends AppCompatActivity
 
 
         //Set adapter
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.nav_drawer_element, course_array));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.element_nav_drawer, course_array));
+
 
 
         class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+
+            Intent intent1;
+            private void onReceivingData() {
+                intent1.putExtra("assignmentData",assignment_data.toString());
+                intent1.putExtra("threadsData",threads_data.toString());
+                intent1.putExtra("gradesData",grades_data.toString());
+                startActivity(intent1);
+            }
+
 
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
 
                 // Highlight the selected item, update the title, and close the drawer
                 // update selected item and title, then close the drawer
+                intent1 = new Intent(context, CoursePage.class);
+                intent1.putExtra("CourseCode",course_array[position]);
 
+                String courseCode = course_array[position];
+                assignmentUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/assignments");
+                gradesUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/grades");
+                threadsUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/threads");
 
+                final JsonObjectRequest sr1 = new JsonObjectRequest(Request.Method.GET,assignmentUrl,null, new Response.Listener<JSONObject>() {
 
-                Intent intent = new Intent(context, CoursePage.class);
-                intent.putExtra("CourseCode",course_array[position]);
-                Log.i("hagga","Starting Course Activity");
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-                startActivity(intent);
+                        Log.i("hagga",response.toString());
+                        assignment_data = response;
 
+                        onReceivingData();
+//                Toast toast = Toast.makeText(getApplicationContext(), "Response 1 Received" , Toast.LENGTH_LONG);
+//                toast.show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching assignment list" + error.getMessage(), Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }) ;
 
+                final JsonObjectRequest sr2 = new JsonObjectRequest(Request.Method.GET,threadsUrl,null, new Response.Listener<JSONObject>() {
 
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.i("hagga",response.toString());
+                        threads_data = response;
+                        myQueue.add(sr1);
+//                Toast toast = Toast.makeText(getApplicationContext(), "Response 2 Received" , Toast.LENGTH_LONG);
+//                toast.show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching threads list" + error.getMessage(), Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }) ;
+
+                final JsonObjectRequest sr3 = new JsonObjectRequest(Request.Method.GET,gradesUrl,null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.i("hagga",response.toString());
+//                Toast toast = Toast.makeText(getApplicationContext(), "Response 3 Received" , Toast.LENGTH_LONG);
+//                toast.show();
+                        grades_data = response;
+                        myQueue.add(sr2);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching grades list" + error.getMessage(), Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }) ;
+                myQueue.add(sr3);
             }
         }
+
+
+
+
 
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -134,7 +212,7 @@ public class home extends AppCompatActivity
 
 
         //To show user name and entry number in the navigation Drawer
-        TextView name = (TextView) findViewById(R.id.nav_header_username);
+//        TextView name = (TextView) findViewById(R.id.nav_header_username);
 //        TextView entry = (TextView) findViewById(R.id.nav_header_entry);
 
 

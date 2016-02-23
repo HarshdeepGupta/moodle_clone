@@ -11,35 +11,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import java.util.ArrayList;
 
 /**
- * Created by hd on 21/2/16.
+ * Created by hd on 23/2/16.
  */
-public class CourseGradesAdapter extends BaseAdapter {
+public class CourseThreadAdapter extends BaseAdapter {
+
+
 
     //Variables
-    private ArrayList<Data_model_course_grades> gradesData;
+    private ArrayList<Data_model_course_threads> threadsData;
     Context context;
 
     //Methods
 
-    public CourseGradesAdapter(Context context, JSONObject values) {
+    public CourseThreadAdapter(Context context, JSONObject values) {
 
         JSONArray values1 = null;
         try {
-            values1 = values.getJSONArray("grades");
+            values1 = values.getJSONArray("course_threads");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        gradesData = Data_model_course_grades.fromJson(values1);
+        threadsData = Data_model_course_threads.fromJson(values1);
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return gradesData.size();
+        return threadsData.size();
     }
 
     @Override
@@ -61,20 +62,20 @@ public class CourseGradesAdapter extends BaseAdapter {
         //make sure we have a view to work with
         View view = convertView;
         if(view == null ){
-            view = inflater.inflate(R.layout.element_course_grade,parent,false);
+            view = inflater.inflate(R.layout.element_course_thread,parent,false);
         }
 
-        TextView score = (TextView) view.findViewById(R.id.score_text_view);
-        TextView weight = (TextView) view.findViewById(R.id.weight_text_view);
-        TextView absolute_marks = (TextView) view.findViewById(R.id.absolute_marks_text_view);
-        TextView grade_item = (TextView) view.findViewById(R.id.grade_item_text_view);
+        TextView title = (TextView) view.findViewById(R.id.course_thread_title);
+        TextView created_at = (TextView) view.findViewById(R.id.course_thread_created_at);
+        TextView thread_descrption = (TextView) view.findViewById(R.id.course_thread_description);
+        TextView last_updated = (TextView) view.findViewById(R.id.course_thread_last_updated);
 
-        Data_model_course_grades item =  gradesData.get(position);
+        Data_model_course_threads item =  threadsData.get(position);
 
-        weight.setText(String.valueOf(item.weightage)) ;
-        score.setText(String.valueOf(item.score));
-        grade_item.setText(item.gradeItem);
-        absolute_marks.setText(String.valueOf(item.score*item.weightage / item.out_of));
+        title.setText(String.valueOf(item.thread_title)) ;
+        created_at.setText(String.valueOf(item.thread_created_at));
+        thread_descrption.setText(item.thread_description);
+        last_updated.setText(String.valueOf(item.thread_last_updated));
         return view;
     }
 

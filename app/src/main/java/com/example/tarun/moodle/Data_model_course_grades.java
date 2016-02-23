@@ -39,7 +39,7 @@ public class Data_model_course_grades {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        Log.i("hagga", this.gradeItem);
+
         Log.i("hagga", "Datamodel Constructor Finished");
     }
 

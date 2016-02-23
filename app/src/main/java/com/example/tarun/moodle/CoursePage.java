@@ -4,6 +4,7 @@ package com.example.tarun.moodle;
 import android.content.Intent;
 import android.content.Context;
 
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CoursePage extends AppCompatActivity {
@@ -46,87 +48,6 @@ public class CoursePage extends AppCompatActivity {
     private JSONObject grades_data;
 
     //Methods for making network requests
-    private void getAssignmentsFromServer() {
-
-        final JsonObjectRequest sr1 = new JsonObjectRequest(Request.Method.GET,assignmentUrl,null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                Log.i("hagga",response.toString());
-                assignment_data = response;
-//                Toast toast = Toast.makeText(getApplicationContext(), "Response 1 Received" , Toast.LENGTH_LONG);
-//                toast.show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching assignment list" + error.getMessage(), Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }) ;
-
-        myQueue.add(sr1);
-
-
-    }
-
-    private void getThreadsFromServer() {
-
-        final JsonObjectRequest sr2 = new JsonObjectRequest(Request.Method.GET,threadsUrl,null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                Log.i("hagga",response.toString());
-                threads_data = response;
-//                Toast toast = Toast.makeText(getApplicationContext(), "Response 2 Received" , Toast.LENGTH_LONG);
-//                toast.show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching threads list" + error.getMessage(), Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }) ;
-
-        myQueue.add(sr2);
-
-
-    }
-
-    private void getGradesFromServer() {
-
-        final JsonObjectRequest sr3 = new JsonObjectRequest(Request.Method.GET,gradesUrl,null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                Log.i("hagga",response.toString());
-//                Toast toast = Toast.makeText(getApplicationContext(), "Response 3 Received" , Toast.LENGTH_LONG);
-//                toast.show();
-                grades_data = response;
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching grades list" + error.getMessage(), Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }) ;
-
-        myQueue.add(sr3);
-
-
-    }
-
-    private void getDataFromServer(){
-        getThreadsFromServer();
-        getAssignmentsFromServer();
-        getGradesFromServer();
-    }
-
 
     public JSONObject get_Grades_data() {
         return grades_data;
@@ -154,14 +75,22 @@ public class CoursePage extends AppCompatActivity {
 
         //Initialize the Variables
         courseCode = intent.getStringExtra("CourseCode");
-        serverAddress = ((Globals) this.getApplication()).getServerAddress();
-        assignmentUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/assignments");
-        gradesUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/grades");
-        threadsUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/threads");
-        myQueue = ((Globals) this.getApplication()).getVolleyQueue();
+        try{
+            assignment_data = new JSONObject(intent.getStringExtra("assignmentData"));
+            grades_data = new JSONObject(intent.getStringExtra("gradesData"));
+            threads_data = new JSONObject(intent.getStringExtra("threadsData"));
+        }
+        catch (JSONException e){
 
-        //Make Server Requests to get the data
-        getDataFromServer();
+        }
+//        serverAddress = ((Globals) this.getApplication()).getServerAddress();
+//
+//        myQueue = ((Globals) this.getApplication()).getVolleyQueue();
+//
+//        //Make Server Requests to get the data
+//        getDataFromServer();
+
+
 
         setContentView(R.layout.activity_course_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

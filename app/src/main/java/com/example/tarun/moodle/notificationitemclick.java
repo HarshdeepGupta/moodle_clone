@@ -58,7 +58,7 @@ public class notificationitemclick implements AdapterView.OnItemClickListener{
             e.printStackTrace();
         }
 
-        Log.i("hagga",serverAddress.concat(thread_link));
+//        Log.i("hagga",serverAddress.concat(thread_link));
         String url_thread = serverAddress.concat(thread_link);
         final JsonObjectRequest sr1 = new JsonObjectRequest(Request.Method.GET,url_thread,null, new Response.Listener<JSONObject>() {
 
@@ -117,7 +117,7 @@ public class notificationitemclick implements AdapterView.OnItemClickListener{
         bundle.putString("THREAD_INFO", data.toString());
         bundle.putString("COMMENT_LIST", comment_list.toString());
         intent.putExtras(bundle);
-        Log.i("hagga","whynot");
+//        Log.i("hagga","whynot");
         mycontext.startActivity(intent);
 
     }

@@ -2,6 +2,9 @@ package com.example.tarun.moodle;
 
 import android.app.Application;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 /**
  * Created by hd on 19/2/16.
  */
@@ -11,6 +14,7 @@ import android.app.Application;
 public class Globals extends Application {
 
     private String serverAddress;
+    private RequestQueue volleyQueue;
 
     private String name;
     private String email;
@@ -18,6 +22,14 @@ public class Globals extends Application {
 
     public String getServerAddress() {
         return serverAddress;
+    }
+
+
+    public RequestQueue getVolleyQueue(){
+        if(volleyQueue == null){
+            volleyQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+        return volleyQueue;
     }
 
     public void setServerAddress(String serverAddress) {

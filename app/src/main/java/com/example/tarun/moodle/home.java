@@ -1,11 +1,8 @@
 package com.example.tarun.moodle;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,29 +13,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.List;
+
+
 
 public class home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static String serverAddress;
     static RequestQueue myQueue;
+    Button logout = null;
 
 
 
@@ -49,13 +45,13 @@ public class home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Bundle userinfo = intent.getExtras();
         String username = userinfo.getString("FIRST_NAME").concat(" ").concat(userinfo.getString("LAST_NAME"));
         String userentry = userinfo.getString("ENTRY_NUMBER");
 
         //Parsing the course array and the notifications array
-        String[] course_array = userinfo.getStringArray("COURSE_LIST");
+        final String[] course_array = userinfo.getStringArray("COURSE_LIST");
         String notification;
         notification = userinfo.getString("NOTIFICATION_LIST");
         JSONArray notificationlist = null;
@@ -78,41 +74,47 @@ public class home extends AppCompatActivity
         final int duration = Toast.LENGTH_LONG;
 
 
-        serverAddress = ((Globals) this.getApplication()).getServerAddress();;
+        serverAddress = ((Globals) this.getApplication()).getServerAddress();
 
-        myQueue = Volley.newRequestQueue(this);
-
-
-
-
-
-        /*--------------------Networking--------------------------*/
-
-        /*------------------Initialize UI--------------------------*/
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
-
+        myQueue = ((Globals) this.getApplication()).getVolleyQueue();
 
         //populate the listview in the drawer layout with the course list
 
+        //declare new variables
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ListView mDrawerList = (ListView) findViewById(R.id.course_list_drawer);
+
+        //attach the course drawer to a variable
+        final ListView mDrawerList = (ListView) findViewById(R.id.course_list_drawer);
+
+
+        //Set adapter
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.nav_drawer_element, course_array));
+
+
+        class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+
+                // Highlight the selected item, update the title, and close the drawer
+                // update selected item and title, then close the drawer
 
 
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_text, course_array));
+                Intent intent = new Intent(context, CoursePage.class);
+                intent.putExtra("CourseCode",course_array[position]);
+                Log.i("hagga","Starting Course Activity");
+
+                startActivity(intent);
+
+
+
+            }
+        }
+
         // Set the list's click listener
-        //mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
 
 
         ListView notification_listview = (ListView) findViewById(R.id.notification_list_drawer);
@@ -131,21 +133,44 @@ public class home extends AppCompatActivity
 
 
         //To show user name and entry number in the navigation Drawer
-        TextView name = (TextView) findViewById(R.id.nav_header_name);
-        TextView entry = (TextView) findViewById(R.id.nav_header_entry);
+        TextView name = (TextView) findViewById(R.id.nav_header_username);
+//        TextView entry = (TextView) findViewById(R.id.nav_header_entry);
 
 
+        //remembers the app current status
+        //restores session on app closure
+        SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
 
 
-        /*
-        name.setText(username);
-        Log.i("hagga", "here7");
-        entry.setText(userentry);
-        Log.i("hagga", "here8");
-        /*
-        /*------------------Initialize UI--------------------------*/
+        //To logout from the app
+        logout = (Button)findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //erases the app current status
+                SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                finish();
+                //Intent intent = new Intent(Login.class);
+
+                //startActivity(intent);
+            }
+
+        });
+
     }
 
+
+    public void logout(View view){
+        SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 
 
     @Override
@@ -199,21 +224,20 @@ public class home extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
+        else{
+
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(getApplicationContext(), "Success !", duration);
+            toast.show();
+
+            Log.i("hagga","Here7");
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void navDrawerClickListener(View view) {
 
-        int duration = Toast.LENGTH_LONG;
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Success !", duration);
-        toast.show();
-
-        Log.i("hagga","Here7");
-
-
-    }
 }

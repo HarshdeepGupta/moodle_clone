@@ -25,21 +25,21 @@ public class FragmentCourseGrades extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Log.i("hagga", "onCreate called from FCG");
+
 
         CoursePage activity = (CoursePage) getActivity();
         if(activity.get_Grades_data() == null){
             Log.i("hagga","empty grades array");
         }
         grades_data = activity.get_Grades_data();
-        Log.i("hagga", "onCreate finished from FCG");
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i("hagga", "OncreateView called from FCG");
+//        Log.i("hagga", "OncreateView called from FCG");
         View view;
         view = inflater.inflate(R.layout.fragment_course_grades, container, false);
 
@@ -49,7 +49,7 @@ public class FragmentCourseGrades extends Fragment {
 
         listView.setAdapter(adapter);
 
-        Log.i("hagga", "OncreateView finished from FCG");
+//        Log.i("hagga", "OncreateView finished from FCG");
 
         return view;
     }

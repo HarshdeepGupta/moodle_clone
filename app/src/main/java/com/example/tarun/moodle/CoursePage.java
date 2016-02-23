@@ -49,9 +49,6 @@ public class CoursePage extends AppCompatActivity {
 
     //Methods for making network requests
 
-
-
-
     public JSONObject get_Grades_data() {
         return grades_data;
     }

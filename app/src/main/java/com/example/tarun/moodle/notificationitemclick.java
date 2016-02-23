@@ -81,7 +81,6 @@ public class notificationitemclick implements AdapterView.OnItemClickListener{
                     for (int i=0;i<comments.length();i++){
                         JSONObject object = new JSONObject();
                         object.put("comment_edited",times_edited.getString(i));
-
                         object.put("comment_description",comments.getJSONObject(i).getString("description"));
                         object.put("comment_created",comments.getJSONObject(i).getString("created_at"));
                         object.put("comment_name",comment_user.getJSONObject(i).getString("first_name").concat(" ").concat(comment_user.getJSONObject(i).getString("last_name")));

@@ -75,6 +75,7 @@ public class Login extends AppCompatActivity {
     EditText user ;
     EditText pass ;
 
+    Globals global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +105,9 @@ public class Login extends AppCompatActivity {
         });
         */
 
+        global = (Globals) this.getApplication();
 
-        ((Globals) this.getApplication()).setServerAddress("http://192.168.0.106:8000");
+        global.setServerAddress("http://192.168.0.106:8000");
 
         serverAddress = ((Globals) this.getApplication()).getServerAddress();
         Log.i("hagga", serverAddress);
@@ -186,13 +188,10 @@ public class Login extends AppCompatActivity {
                         name = links.get(0).text();
                         course = links.get(2).text();
                         thread_link = links.get(1).attr("href");
-
-
                         object.put("created_at", created);
                         object.put("course", course);
                         object.put("name", name);
-                        object.put("thread_link",thread_link);
-
+                        object.put("thread_link", thread_link);
                         notification_array.put(object);
 
                     }
@@ -264,6 +263,10 @@ public class Login extends AppCompatActivity {
                         first_name = details.getString("first_name");
                         last_name = details.getString("last_name");
                         entry_number = details.getString("entry_no");
+                        String email = details.getString("email");
+                        global.setName(first_name.concat(" ").concat(last_name));
+                        global.setEmail(email);
+                        global.setEntry_number(entry_number);
                         myQueue.add(sr1);
 
                     }

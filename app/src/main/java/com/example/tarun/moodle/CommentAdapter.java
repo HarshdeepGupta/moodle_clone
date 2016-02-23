@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by tarun on 19/2/16.
@@ -20,7 +21,7 @@ public class CommentAdapter extends BaseAdapter{
     private Context mycontext;
     private JSONArray myarray;
     private LayoutInflater mLayoutInflater = null;
-
+    private JSONArray myarrayreverse;
 
     CommentAdapter() {
         mycontext = null;
@@ -31,7 +32,14 @@ public class CommentAdapter extends BaseAdapter{
     public CommentAdapter(Context c,JSONArray comment) {
         mycontext = c;
         myarray = comment;
-
+        myarrayreverse = new JSONArray();
+        for (int i=myarray.length()-1;i>=0;i--){
+            try {
+                myarrayreverse.put(myarray.getJSONObject(i));
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -51,7 +59,7 @@ public class CommentAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        Log.i("hagga",String.valueOf(myarray.length()));
+
         return myarray.length();
     }
 
@@ -66,6 +74,18 @@ public class CommentAdapter extends BaseAdapter{
     public Object getItem(int arg) {
 
         return arg;
+    }
+
+    public void add(JSONObject object){
+        myarray.put(object);
+        for (int i=myarray.length()-1;i>=0;i--){
+            myarrayreverse = null;
+            try {
+                myarrayreverse.put(myarray.getJSONObject(i));
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -86,9 +106,9 @@ public class CommentAdapter extends BaseAdapter{
         comment_description.setMovementMethod(new ScrollingMovementMethod());
 
         try {
-            name.setText(myarray.getJSONObject(position).getString("comment_name"));
-            date.setText(myarray.getJSONObject(position).getString("comment_created"));
-            comment_description.setText(myarray.getJSONObject(position).getString("comment_description"));
+            name.setText(myarrayreverse.getJSONObject(position).getString("comment_name"));
+            date.setText(myarrayreverse.getJSONObject(position).getString("comment_created"));
+            comment_description.setText(myarrayreverse.getJSONObject(position).getString("comment_description"));
 
         }catch (JSONException e) {
             e.printStackTrace();

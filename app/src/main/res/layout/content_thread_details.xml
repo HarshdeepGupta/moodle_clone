@@ -1,4 +1,4 @@
-<RelativeLayout
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -14,4 +14,35 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     </ListView>
-</RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/add_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:layout_margin="15dp"
+        android:elevation="8dp"
+        android:background="#ffffff"
+        android:visibility="invisible">
+        <EditText
+            android:id="@+id/comment_description"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            />
+        <Button
+            android:id="@+id/post_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POST"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+</FrameLayout>

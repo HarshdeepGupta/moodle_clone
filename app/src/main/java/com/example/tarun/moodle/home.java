@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class home extends AppCompatActivity
 
     static String serverAddress;
     static RequestQueue myQueue;
+    Button logout = null;
 
 
 
@@ -142,8 +144,34 @@ public class home extends AppCompatActivity
         SharedPreferences.Editor editor = sharedpreferences.edit();
 
 
+        //To logout from the app
+        logout = (Button)findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //erases the app current status
+                SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                finish();
+                //Intent intent = new Intent(Login.class);
+
+                //startActivity(intent);
+            }
+
+        });
+
     }
 
+
+    public void logout(View view){
+        SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 
 
     @Override

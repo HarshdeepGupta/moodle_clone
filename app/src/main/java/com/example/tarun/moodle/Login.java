@@ -50,6 +50,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Handler;
 import android.content.SharedPreferences;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -74,6 +77,12 @@ public class Login extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     SharedPreferences sharedpreferences;
 
+
+    private  ProgressDialog progressBar;
+    private int progressBarStatus = 0;
+    private Handler progressBarbHandler = new Handler();
+    private long fileSize = 0;
+
     EditText user ;
     EditText pass ;
 
@@ -89,14 +98,10 @@ public class Login extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Moodle");
 
-
         CookieManager manager = new CookieManager();
         CookieHandler.setDefault(manager);
 
         manager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-
-
-
         ((Globals) this.getApplication()).setServerAddress("http://192.168.0.117:8000");
 
         serverAddress = ((Globals) this.getApplication()).getServerAddress();
@@ -106,7 +111,6 @@ public class Login extends AppCompatActivity {
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
 
-
         //remembers the current login status
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
@@ -114,6 +118,7 @@ public class Login extends AppCompatActivity {
         pass.setText("jasmeet");
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,6 +145,18 @@ public class Login extends AppCompatActivity {
     //Click Listener for login button
     public void login_method(View view){
 
+        /*
+            Start the progressBar on Clicking the "Login" button
+            It is selected as indeterminate since the display duration is unknown
+         */
+        progressBar = new ProgressDialog(view.getContext());
+        progressBar.setCancelable(true);
+        progressBar.setIndeterminate(true);
+        progressBar.setMessage("Logging In ...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setProgress(0);
+        progressBar.show();
+
         final Context context = getApplicationContext();
 
         final int duration = Toast.LENGTH_LONG;
@@ -155,8 +172,6 @@ public class Login extends AppCompatActivity {
         String url = serverAddress.concat("/default/login.json?userid=");
 
         url = url.concat(user_name).concat("&password=").concat(password);
-
-
 
 
         String url_notification = serverAddress.concat("/default/notifications.json");
@@ -204,6 +219,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast toast = Toast.makeText(context, "Error3" + error.getMessage(), duration);
+                progressBar.hide();
                 toast.show();
             }
         }) ;
@@ -234,10 +250,10 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast toast = Toast.makeText(context, "Error2" + error.getMessage(), duration);
+                progressBar.hide();
                 toast.show();
             }
         }) ;
-
 
 
 
@@ -254,6 +270,7 @@ public class Login extends AppCompatActivity {
                     proceed = response.getBoolean("success");
                     if(proceed==false){
                         Toast toast = Toast.makeText(context, "Invalid Username or Password", duration);
+                        progressBar.hide();
                         toast.show();
                     }
                     else if(proceed==true){
@@ -269,19 +286,16 @@ public class Login extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast toast = Toast.makeText(context, "Error in 1st request : " + error.getMessage(), duration);
+                progressBar.hide();
                 toast.show();
             }
         }) ;
         myQueue.add(sr);
-
-
 
     }
 
@@ -296,6 +310,8 @@ public class Login extends AppCompatActivity {
         bundle.putString("NOTIFICATION_LIST", notification_array.toString());
 
         SharedPreferences.Editor editor = sharedpreferences.edit();
+        //hide progressBar here
+        progressBar.hide();
 
         intent.putExtras(bundle);
         startActivity(intent);

@@ -3,16 +3,21 @@ package com.example.tarun.moodle;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by tarun on 18/2/16.
@@ -20,7 +25,7 @@ import org.json.JSONException;
 public class NotificationAdapter extends BaseAdapter {
 
     private Context mycontext;
-    private JSONArray myarray;
+    private ArrayList<Data_model_notification> myarray;
     private LayoutInflater mLayoutInflater = null;
 
 
@@ -30,12 +35,24 @@ public class NotificationAdapter extends BaseAdapter {
 
     }
 
-    public NotificationAdapter(Context c,JSONArray notifications) {
-        mycontext = c;
-        myarray = notifications;
+    public NotificationAdapter(Context context, JSONObject values) {
+
+        this.mycontext = context;
+
+        JSONArray values1 = null;
+        try {
+            values1 = values.getJSONArray("notifications");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        myarray = Data_model_notification.fromJson(values1);
 
     }
 
+    public void remove_from_array(int position){
+        myarray.remove(position);
+        this.notifyDataSetChanged();
+    }
 
     @Override
     public boolean areAllItemsEnabled (){
@@ -53,7 +70,7 @@ public class NotificationAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return myarray.length();
+        return myarray.size();
     }
 
 
@@ -83,15 +100,12 @@ public class NotificationAdapter extends BaseAdapter {
         TextView course = (TextView) myview.findViewById(R.id.notification_course);
 
 
-        try {
-            name.setText(myarray.getJSONObject(position).getString("name"));
-            date.setText(myarray.getJSONObject(position).getString("created_at"));
-            course.setText(myarray.getJSONObject(position).getString("course"));
+        CheckBox box = (CheckBox) myview.findViewById(R.id.is_seen);
 
-
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Data_model_notification item = myarray.get(position);
+        name.setText(item.person_name);
+        date.setText(item.date);
+        course.setText(item.course);
             return myview;
 
     }

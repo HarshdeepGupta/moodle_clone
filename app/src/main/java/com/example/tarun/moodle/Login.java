@@ -117,17 +117,19 @@ public class Login extends AppCompatActivity {
         */
 
 
-        ((Globals) this.getApplication()).setServerAddress("http://192.168.0.117:8000");
+        //((Globals) this.getApplication()).setServerAddress("http://192.168.0.117:8000");
+
+        global = ((Globals) this.getApplication());
+        global.setServerAddress("http://192.168.0.117:8000");
+
+        serverAddress = global.getServerAddress();
 
 
-        serverAddress = ((Globals) this.getApplication()).getServerAddress();
-        //Log.i("hagga", serverAddress);
-
-        myQueue = ((Globals) this.getApplication()).getVolleyQueue();
+        myQueue =  global.getVolleyQueue();
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
 
-        //remembers the current login status
+
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         user.setText("cs5110281");
@@ -195,6 +197,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
+                Log.i("hagga","here3");
                 try {
 
                     notification_array = new JSONArray();
@@ -209,7 +212,7 @@ public class Login extends AppCompatActivity {
                         String thread_link;
                         Document doc = Jsoup.parse(description);
                         org.jsoup.select.Elements links = doc.select("a");
-
+                        String notification_id = notify.getJSONObject(i).getString("id");
 
 
                         name = links.get(0).text();
@@ -219,6 +222,7 @@ public class Login extends AppCompatActivity {
                         object.put("course", course);
                         object.put("name", name);
                         object.put("thread_link", thread_link);
+                        object.put("notification_id",notification_id);
                         notification_array.put(object);
 
                     }
@@ -244,7 +248,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
-
+                Log.i("hagga","here2");
                 try {
                     JSONArray courses = response.getJSONArray("courses");
 
@@ -281,6 +285,7 @@ public class Login extends AppCompatActivity {
 
                 try {
                     proceed = response.getBoolean("success");
+                    Log.i("hagga","here1");
                     if(proceed==false){
                         Toast toast = Toast.makeText(context, "Invalid Username or Password", duration);
                         progressBar.hide();

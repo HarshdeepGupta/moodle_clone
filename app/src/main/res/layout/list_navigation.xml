@@ -51,7 +51,14 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:text="Field 2"
-
             />
+        <CheckBox
+            android:id="@+id/is_seen"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Seen"
+            android:onClick="remove_notification"
+            />
+
         </LinearLayout>
 </LinearLayout>

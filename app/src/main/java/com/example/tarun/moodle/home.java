@@ -25,8 +25,7 @@ import com.android.volley.RequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-
-
+import org.json.JSONObject;
 
 
 public class home extends AppCompatActivity
@@ -55,9 +54,11 @@ public class home extends AppCompatActivity
         String notification;
         notification = userinfo.getString("NOTIFICATION_LIST");
         JSONArray notificationlist = null;
+        JSONObject notifications = null;
         try {
             notificationlist = new JSONArray(notification);
-
+            notifications = new JSONObject();
+            notifications.put("notifications",notificationlist);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -116,9 +117,9 @@ public class home extends AppCompatActivity
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 
-
+        NotificationAdapter notificationAdapter = new NotificationAdapter(this, notifications);
         ListView notification_listview = (ListView) findViewById(R.id.notification_list_drawer);
-        notification_listview.setAdapter(new NotificationAdapter(this, notificationlist));
+        notification_listview.setAdapter(notificationAdapter);
         notification_listview.setOnItemClickListener(new notificationitemclick(this,notificationlist));
 
 
@@ -170,6 +171,11 @@ public class home extends AppCompatActivity
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
         editor.commit();
+    }
+
+    public void remove_notification(View view){
+
+
     }
 
 

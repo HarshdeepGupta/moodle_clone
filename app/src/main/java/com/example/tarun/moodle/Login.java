@@ -102,8 +102,6 @@ public class Login extends AppCompatActivity {
         CookieHandler.setDefault(manager);
 
         manager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-
-
         ((Globals) this.getApplication()).setServerAddress("http://192.168.0.117:8000");
 
         serverAddress = ((Globals) this.getApplication()).getServerAddress();

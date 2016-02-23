@@ -22,7 +22,6 @@ import android.widget.Toast;
 import android.content.SharedPreferences;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +74,7 @@ public class home extends AppCompatActivity
         final int duration = Toast.LENGTH_LONG;
 
 
-        serverAddress = ((Globals) this.getApplication()).getServerAddress();;
+        serverAddress = ((Globals) this.getApplication()).getServerAddress();
 
         myQueue = ((Globals) this.getApplication()).getVolleyQueue();
 

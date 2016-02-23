@@ -6,67 +6,88 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
+
+
+import java.util.ArrayList;
 
 /**
  * Created by hd on 21/2/16.
  */
-public class CourseGradesAdapter extends ArrayAdapter<String> {
+public class CourseGradesAdapter extends ArrayAdapter<Data_model_course_grades> {
 
+    //Variables
+    private ArrayList<Data_model_course_grades> gradesData;
 
-    private final Context context;
-    private final String[] values;
+    //Methods
 
+    public CourseGradesAdapter(Context context, JSONObject values) {
 
-    //values is a string containing data in JSON format
-
-    public CourseGradesAdapter(Context context, String[] values) {
-        super(context, -1,values);
-        this.context = context;
-        this.values = values;
+        super(context, 0);
+        Log.i("hagga","gradesAdapterConstructorCalled");
+        JSONArray values1 = null;
+        try {
+            values1 = values.getJSONArray("grades");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        gradesData = Data_model_course_grades.fromJson(values1);
+        Log.i("hagga","gradesAdapterConstructorFinished");
 
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
+
+        Log.i("hagga", "gradesAdapterGetviewCalled");
+        LayoutInflater inflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.course_grade_element, parent, false);
-        TextView score = (TextView) rowView.findViewById(R.id.score_text_view);
-        TextView weight = (TextView) rowView.findViewById(R.id.weight_text_view);
-        TextView absolute_marks = (TextView) rowView.findViewById(R.id.absolute_marks_text_view);
+        //make sure we have a view to work with
+        if(convertView == null ){
+            convertView = inflater.inflate(R.layout.course_grade_element,parent,false);
+            Log.i("hagga","ViewInflated");
+        }
 
+        TextView score = (TextView) convertView.findViewById(R.id.score_text_view);
+        TextView weight = (TextView) convertView.findViewById(R.id.weight_text_view);
+        TextView absolute_marks = (TextView) convertView.findViewById(R.id.absolute_marks_text_view);
+        TextView grade_item = (TextView) convertView.findViewById(R.id.grade_item_text_view);
 
-        //convert values into a JSON object
+        Data_model_course_grades item =  gradesData.get(position);
 
-//        try {
-//            JSONArray data = new JSONArray(values);
-//        }
-//        catch (JSONException e){
-//            Log.i("hagga",e.toString());
-//        }
+        weight.setText(item.weightage) ;
+        score.setText(item.score);
+        grade_item.setText(item.gradeItem);
+        absolute_marks.setText(item.score*item.weightage / item.out_of);
 
-        //TODO by HD
-        //Parse JSON objects and set the values of this row
+        Log.i("hagga", "gradesAdapterGetviewFinished");
 
-//        textView.setText(values[position]);
-//        // change the icon for Windows and iPhone
-//        String s = values[position];
-//        if (s.startsWith("iPhone")) {
-//            imageView.setImageResource(R.drawable.no);
-//        } else {
-//            imageView.setImageResource(R.drawable.ok);
-//        }
-
-        return rowView;
+        return convertView;
     }
 
 
+
+    @Override
+    public boolean areAllItemsEnabled (){
+        return true;
+    }
+    @Override
+    public int getItemViewType (int position){
+        return 0;
+    }
+
+    @Override
+    public int getViewTypeCount(){
+        return 1;
+    }
+    @Override
+    public long getItemId(int position) {
+
+        return position;
+    }
 
 }

@@ -2,7 +2,6 @@ package com.example.tarun.moodle;
 
 
 import android.content.Intent;
-
 import android.content.Context;
 
 import android.support.design.widget.TabLayout;
@@ -18,14 +17,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.content.SharedPreferences;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,34 +29,24 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CoursePage extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
-    String courseCode;
-    String serverAddress;
-    String assignmentUrl;
-    static RequestQueue myQueue;
-    JSONArray assignment_array;
+    private String courseCode;
+    private String serverAddress;
+    private String assignmentUrl,threadsUrl,gradesUrl;
+    private static RequestQueue myQueue;
+    private JSONObject assignment_data;
+    private JSONObject threads_data;
+    private JSONObject grades_data;
 
-    public void getAssignments() {
+    //Methods for making network requests
+    private void getAssignmentsFromServer() {
 
         final JsonObjectRequest sr1 = new JsonObjectRequest(Request.Method.GET,assignmentUrl,null, new Response.Listener<JSONObject>() {
 
@@ -68,21 +54,9 @@ public class CoursePage extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 Log.i("hagga",response.toString());
-                Toast toast = Toast.makeText(getApplicationContext(), "Response Received" , Toast.LENGTH_LONG);
-                toast.show();
-//                try {
-//                    JSONArray courses = response.getJSONArray("courses");
-//
-//                    assignment_array = new String[courses.length()];
-//                    for (int i=0;i<courses.length();i++){
-//                        assignment_array[i] = courses.getJSONObject(i).getString("code");
-//                    }
-//
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-
+                assignment_data = response;
+//                Toast toast = Toast.makeText(getApplicationContext(), "Response 1 Received" , Toast.LENGTH_LONG);
+//                toast.show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -97,45 +71,110 @@ public class CoursePage extends AppCompatActivity {
 
     }
 
+    private void getThreadsFromServer() {
+
+        final JsonObjectRequest sr2 = new JsonObjectRequest(Request.Method.GET,threadsUrl,null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.i("hagga",response.toString());
+                threads_data = response;
+//                Toast toast = Toast.makeText(getApplicationContext(), "Response 2 Received" , Toast.LENGTH_LONG);
+//                toast.show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching threads list" + error.getMessage(), Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }) ;
+
+        myQueue.add(sr2);
+
+
+    }
+
+    private void getGradesFromServer() {
+
+        final JsonObjectRequest sr3 = new JsonObjectRequest(Request.Method.GET,gradesUrl,null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.i("hagga",response.toString());
+//                Toast toast = Toast.makeText(getApplicationContext(), "Response 3 Received" , Toast.LENGTH_LONG);
+//                toast.show();
+                grades_data = response;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Error in fetching grades list" + error.getMessage(), Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }) ;
+
+        myQueue.add(sr3);
+
+
+    }
+
+    private void getDataFromServer(){
+        getThreadsFromServer();
+        getAssignmentsFromServer();
+        getGradesFromServer();
+    }
+
+
+    public JSONObject get_Grades_data() {
+        return grades_data;
+    }
+
+    public JSONObject get_Threads_data() {
+        return threads_data;
+    }
+
+    public JSONObject get_Assignment_data() {
+        return assignment_data;
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_page);
+
 
         Log.i("hagga", "Called onCreate");
 
 
-
-
         Intent intent = getIntent();
 
+        //Initialize the Variables
         courseCode = intent.getStringExtra("CourseCode");
         serverAddress = ((Globals) this.getApplication()).getServerAddress();
         assignmentUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/assignments");
+        gradesUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/grades");
+        threadsUrl = serverAddress.concat("/courses/course.json/").concat(courseCode).concat("/threads");
         myQueue = ((Globals) this.getApplication()).getVolleyQueue();
-        Log.i("hagga",assignmentUrl);
 
+        //Make Server Requests to get the data
+        getDataFromServer();
+
+        setContentView(R.layout.activity_course_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        Log.i("hagga","Calling new Adapter");
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        Log.i("hagga", "Setting up Viewpager");
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-
-
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -145,8 +184,6 @@ public class CoursePage extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
         //restores session on app closure
         SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -176,48 +213,6 @@ public class CoursePage extends AppCompatActivity {
         }
     }
 
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            Log.i("hagga", "newInstance called");
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            Log.i("hagga", "NewInstance finished");
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_course_thread, container, false);
-//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -227,27 +222,19 @@ public class CoursePage extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            Log.i("hagga", "Get item Called");
 
             Fragment fragment = null;
             switch (position){
                 case 0:
-//                    getThreads();
-                    fragment = PlaceholderFragment.newInstance(position + 1);
+                    fragment = new FragmentCourseThreads();
                     break;
                 case 1:
-                    getAssignments();
                     fragment = new FragmentCourseAssignment();
                     break;
                 case 2:
-//                    getGrades();
-                    String[] hagga = new String[4];
                     fragment = new FragmentCourseGrades();
                     break;
             }
-
-            Log.i("hagga", "Get item finished");
-
             return fragment;
         }
 
@@ -267,7 +254,6 @@ public class CoursePage extends AppCompatActivity {
                 case 2:
                     return "Grades";
             }
-            Log.i("hagga", "Set title called");
             return null;
         }
     }

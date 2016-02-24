@@ -20,14 +20,15 @@ public class Data_model_course_threads {
     public int thread_id;
 
 
-
-
-
-
+    public Data_model_course_threads(String thread_title,String thread_description,String thread_created_at,String thread_last_updated){
+        this.thread_title = thread_title;
+        this.thread_description = thread_description;
+        this.thread_last_updated = thread_last_updated;
+        this.thread_created_at = thread_created_at;
+    }
 
     public Data_model_course_threads(JSONObject object) {
 
-//        Log.i("hagga", "Datamodel Constructor Called");
         try {
             this.thread_title = object.getString("title");
             this.thread_description = object.getString("description");
@@ -38,13 +39,12 @@ public class Data_model_course_threads {
             e.printStackTrace();
         }
 
-//        Log.i("hagga", "Datamodel Constructor Finished");
     }
 
 
     public static ArrayList<Data_model_course_threads> fromJson(JSONArray jsonObjects) {
 
-//        Log.i("hagga", "FromJSONcalled" );
+
         ArrayList<Data_model_course_threads> threadsData = new ArrayList<Data_model_course_threads>();
         int length = jsonObjects.length();
         for (int i = 0; i < length; i++) {
@@ -54,8 +54,6 @@ public class Data_model_course_threads {
                 e.printStackTrace();
             }
         }
-//        Log.i("hagga", "FromJSONFinished");
-
         return threadsData;
     }
 

@@ -19,6 +19,9 @@ import java.util.ArrayList;
 public class CourseThreadAdapter extends BaseAdapter {
 
 
+    public ArrayList<Data_model_course_threads> getThreadsData() {
+        return threadsData;
+    }
 
     //Variables
     private ArrayList<Data_model_course_threads> threadsData;
@@ -71,7 +74,6 @@ public class CourseThreadAdapter extends BaseAdapter {
         TextView last_updated = (TextView) view.findViewById(R.id.course_thread_last_updated);
 
         Data_model_course_threads item =  threadsData.get(position);
-
         title.setText(String.valueOf(item.thread_title)) ;
         created_at.setText(String.valueOf(item.thread_created_at));
         thread_descrption.setText(item.thread_description);
@@ -79,8 +81,8 @@ public class CourseThreadAdapter extends BaseAdapter {
         return view;
     }
 
-
-
-
-
+    public void add(Data_model_course_threads item){
+        threadsData.add(0,item);
+        this.notifyDataSetChanged();
+    }
 }

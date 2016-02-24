@@ -79,9 +79,9 @@ public class FragmentCourseThreads extends Fragment{
                 ArrayList<Data_model_course_threads> threadsData = adapter.getThreadsData();
                 int thread_id = threadsData.get(position).thread_id;
 
-                TextView t = new TextView(getContext());
-                t.setText("This is it");
-                View v = getActivity().findViewById()
+//                TextView t = new TextView(getContext());
+//                t.setText("This is it");
+//                View v = getActivity().findViewById()
 
                 Toast.makeText(getContext(), "Implement ThreadClick method", Toast.LENGTH_LONG).show();
             }

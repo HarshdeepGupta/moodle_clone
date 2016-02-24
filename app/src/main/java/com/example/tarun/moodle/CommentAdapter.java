@@ -42,7 +42,6 @@ public class CommentAdapter extends BaseAdapter{
         }
     }
 
-
     @Override
     public boolean areAllItemsEnabled (){
         return true;
@@ -76,16 +75,18 @@ public class CommentAdapter extends BaseAdapter{
         return arg;
     }
 
-    public void add(JSONObject object){
+    public void add_comment(JSONObject object){
         myarray.put(object);
+        myarrayreverse = null;
+        myarrayreverse = new JSONArray();
         for (int i=myarray.length()-1;i>=0;i--){
-            myarrayreverse = null;
             try {
                 myarrayreverse.put(myarray.getJSONObject(i));
             }catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        this.notifyDataSetChanged();
     }
 
     @Override

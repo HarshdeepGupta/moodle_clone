@@ -35,9 +35,6 @@ public class FragmentCourseThreads extends Fragment{
         }
         threadsData = activity.get_Threads_data();
 
-
-
-
     }
 
     @Override

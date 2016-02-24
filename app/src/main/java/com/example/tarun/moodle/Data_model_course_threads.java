@@ -25,6 +25,7 @@ public class Data_model_course_threads {
 
 
 
+
     public Data_model_course_threads(JSONObject object) {
 
 //        Log.i("hagga", "Datamodel Constructor Called");
@@ -58,8 +59,5 @@ public class Data_model_course_threads {
 
         return threadsData;
     }
-
-
-
 
 }

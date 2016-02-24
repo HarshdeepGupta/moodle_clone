@@ -59,6 +59,7 @@ public class FragmentCourseThreads extends Fragment{
         myQueue = global.getVolleyQueue();
 
 
+
     }
 
     @Override

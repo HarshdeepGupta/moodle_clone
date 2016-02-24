@@ -86,7 +86,7 @@ public class NotificationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent){
+    public View getView(final int position, View view, ViewGroup parent){
 
         View myview = view;
         if(myview==null) {
@@ -98,15 +98,21 @@ public class NotificationAdapter extends BaseAdapter {
         TextView name = (TextView) myview.findViewById(R.id.notification_person_name);
         TextView date=(TextView) myview.findViewById(R.id.notification_person_date);
         TextView course = (TextView) myview.findViewById(R.id.notification_course);
-
-
-        CheckBox box = (CheckBox) myview.findViewById(R.id.is_seen);
-
         Data_model_notification item = myarray.get(position);
         name.setText(item.person_name);
         date.setText(item.date);
         course.setText(item.course);
-            return myview;
+
+        CheckBox box = (CheckBox) myview.findViewById(R.id.is_seen);
+        box.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remove_from_array(position);
+            }
+
+        });
+
+        return myview;
 
     }
 }

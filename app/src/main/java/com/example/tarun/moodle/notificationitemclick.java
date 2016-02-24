@@ -1,5 +1,6 @@
 package com.example.tarun.moodle;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,21 +25,24 @@ import org.json.JSONObject;
  */
 public class notificationitemclick implements AdapterView.OnItemClickListener{
 
-    static String serverAddress ="http://192.168.0.106:8000";
+    static String serverAddress;
     static RequestQueue myQueue;
     final int duration = Toast.LENGTH_LONG;
 
-
+    Globals global;
     private Context mycontext;
     private JSONArray myarray;
     private JSONObject data;
     private JSONArray comment_list;
 
 
-    public notificationitemclick(Context c,JSONArray j){
+    public notificationitemclick(Activity a,Context c,JSONArray j){
+
         mycontext = c;
         myarray = j;
-        myQueue = Volley.newRequestQueue(c);
+        global = ((Globals) a.getApplication());
+        serverAddress = global.getServerAddress();
+        myQueue = global.getVolleyQueue();
     }
 
     @Override
@@ -50,6 +54,7 @@ public class notificationitemclick implements AdapterView.OnItemClickListener{
         data = new JSONObject();
         try {
             thread_link = myarray.getJSONObject(position).getString("thread_link");
+
             thread_link = thread_link.replaceFirst("thread/", "thread.json/");
             name = myarray.getJSONObject(position).getString("name");
             data.put("thread_name",name);
@@ -78,6 +83,7 @@ public class notificationitemclick implements AdapterView.OnItemClickListener{
                     data.put("thread_description",thread_info.getString("description"));
                     data.put("thread_created_at",thread_info.getString("created_at"));
                     data.put("thread_updated_at", thread_info.getString("updated_at"));
+                    data.put("thread_number",thread_info.getString("id"));
                     for (int i=0;i<comments.length();i++){
                         JSONObject object = new JSONObject();
                         object.put("comment_edited",times_edited.getString(i));
@@ -113,7 +119,6 @@ public class notificationitemclick implements AdapterView.OnItemClickListener{
 
         Intent intent = new Intent(mycontext,ThreadDetails.class);
         Bundle bundle = new Bundle();
-        Log.i("hagga",String.valueOf(comment_list.length()));
         bundle.putString("THREAD_INFO", data.toString());
         bundle.putString("COMMENT_LIST", comment_list.toString());
         intent.putExtras(bundle);

@@ -27,6 +27,7 @@ public class Data_model_course_threads {
         this.thread_created_at = thread_created_at;
     }
 
+
     public Data_model_course_threads(JSONObject object) {
 
         try {
@@ -56,8 +57,5 @@ public class Data_model_course_threads {
         }
         return threadsData;
     }
-
-
-
 
 }

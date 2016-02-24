@@ -57,7 +57,7 @@
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:text="Seen"
-            android:onClick="remove_notification"
+            android:focusable="false"
             />
 
         </LinearLayout>

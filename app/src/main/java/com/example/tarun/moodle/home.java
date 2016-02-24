@@ -198,8 +198,9 @@ public class home extends AppCompatActivity
         NotificationAdapter notificationAdapter = new NotificationAdapter(this, notifications);
         ListView notification_listview = (ListView) findViewById(R.id.notification_list_drawer);
         notification_listview.setAdapter(notificationAdapter);
-        notification_listview.setOnItemClickListener(new notificationitemclick(this,notificationlist));
-
+        Log.i("hagga", "here1");
+        notification_listview.setOnItemClickListener(new notificationitemclick(this, this, notificationlist));
+        Log.i("hagga", "here2");
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -223,7 +224,7 @@ public class home extends AppCompatActivity
 
 
         //To logout from the app
-        logout = (Button)findViewById(R.id.logout);
+        logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,9 +232,27 @@ public class home extends AppCompatActivity
                 //erases the app current status
                 SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
+
                 editor.clear();
                 editor.commit();
-                finish();
+                String url_notification = serverAddress.concat("/default/logout.json");
+                final JsonObjectRequest sr2 = new JsonObjectRequest(Request.Method.GET,url_notification,null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast toast = Toast.makeText(context, "logout", duration);
+                        toast.show();
+                        finish();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(context, "Error3" + error.getMessage(), duration);
+                        toast.show();
+                    }
+                }) ;
+                myQueue.add(sr2);
+
                 //Intent intent = new Intent(Login.class);
 
                 //startActivity(intent);
@@ -243,20 +262,14 @@ public class home extends AppCompatActivity
 
     }
 
-
+/*
     public void logout(View view){
         SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
         editor.commit();
     }
-
-    public void remove_notification(View view){
-
-
-    }
-
-
+*/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -322,6 +335,8 @@ public class home extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 
 }

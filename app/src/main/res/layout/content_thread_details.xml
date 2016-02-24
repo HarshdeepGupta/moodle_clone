@@ -1,6 +1,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
+
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ListView
         android:id="@+id/comment_list_drawer"
@@ -25,7 +26,8 @@
         android:layout_margin="15dp"
         android:elevation="8dp"
         android:background="#ffffff"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        >
         <EditText
             android:id="@+id/comment_description"
             android:layout_height="wrap_content"

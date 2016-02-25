@@ -100,8 +100,8 @@ public class CommentAdapter extends BaseAdapter{
             myview = inflater.inflate(R.layout.list_comments, null);
 
         }
-        TextView name = (TextView) myview.findViewById(R.id.thread_comment_name);
-        TextView date=(TextView) myview.findViewById(R.id.thread_comment_date);
+        TextView name = (TextView) myview.findViewById(R.id.notification_person_name);
+        TextView date=(TextView) myview.findViewById(R.id.notification_person_date);
         TextView comment_description = (TextView) myview.findViewById(R.id.thread_comment);
         comment_description.setMovementMethod(new ScrollingMovementMethod());
 

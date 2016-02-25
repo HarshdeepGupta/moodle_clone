@@ -19,7 +19,7 @@
             android:id="@+id/toolbar_login"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#17B7C8"
+            android:background="#156FA9"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:elevation="8dp"/>
 
@@ -37,12 +37,16 @@
         android:gravity="center"
         >
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"/>
+
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:drawableTop="@drawable/mood1"
             android:text="Moodle"
-            android:textColor="#AFB6C0"
+            android:textColor="#F88017"
             android:textSize="75dp"
             android:textStyle="normal"
             android:fontFamily="sans-serif"
@@ -51,7 +55,7 @@
 
     <EditText
         android:id = "@+id/username"
-        android:layout_width = "match_parent"
+        android:layout_width = "wrap_content"
         android:layout_height="wrap_content"
         android:hint="Username"
         android:drawableLeft="@drawable/user"
@@ -66,12 +70,13 @@
         />
     <EditText
         android:id = "@+id/password"
-        android:layout_width = "match_parent"
+        android:layout_width = "wrap_content"
         android:layout_height="wrap_content"
         android:hint="Password"
         android:drawableLeft="@drawable/pass"
         android:drawablePadding="10dp"
         android:textColorHint="#AFB6C0"
+        android:inputType="textPassword"
         android:padding="5dp"
         android:textSize="22dp"
         android:textColor="#AFB6C0"
@@ -87,7 +92,7 @@
             android:layout_height="wrap_content"
             android:onClick="login_method"
             android:text="Sign In"
-            android:background="#3EC5CC"
+            android:background="@color/previous"
             android:textColor="#E4EBED"
             android:gravity="center"
             android:layout_margin="8dp"

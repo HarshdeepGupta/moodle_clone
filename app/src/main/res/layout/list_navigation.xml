@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:layout_margin="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/notify_layout_grid"
+    android:elevation="15dp"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
 
 
     <TextView
@@ -13,32 +16,46 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:textAlignment="center"
-        android:textSize="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAllCaps="true"
+        android:background="#B0E0E6"
         />
 
-    <LinearLayout
+    <GridLayout
 
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
+        android:elevation="10dp"
+        android:padding="5dp"
         >
     <ImageView
         android:id="@+id/notification_person_image"
-        android:layout_height="40dp"
-        android:layout_width="40dp"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
         android:padding="5dp"
         android:layout_margin="5dp"
-        android:src="@drawable/images"
+        android:src="@drawable/image"
+        android:layout_row="0"
+        android:layout_column="0"
         />
 
+        <GridLayout
+
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:elevation="10dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            >
         <TextView
             android:id="@+id/notification_person_name"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:padding="5dp"
-            android:layout_margin="10dp"
             android:text="Field 1"
-
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_row="0"
+            android:layout_column="1"
             />
 
         <TextView
@@ -46,19 +63,29 @@
             android:layout_height="30dp"
             android:layout_width="wrap_content"
             android:padding="5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
             android:text="Field 2"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_row="1"
+            android:layout_column="1"
             />
+
+        </GridLayout>
         <CheckBox
             android:id="@+id/is_seen"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:text="Seen"
             android:onClick="remove_notification"
+            android:layout_row="0"
+            android:layout_column="3"/>
+        <TextView
+            android:id="@+id/seen_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Seen"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             />
 
-        </LinearLayout>
+        </GridLayout>
 </LinearLayout>

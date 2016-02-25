@@ -85,6 +85,7 @@
             android:layout_row="0"
             android:layout_column="4"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:focusable="false"
             />
 
         </GridLayout>

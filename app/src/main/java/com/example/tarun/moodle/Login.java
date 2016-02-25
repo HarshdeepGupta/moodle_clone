@@ -197,7 +197,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("hagga","here3");
+
                 try {
 
                     notification_array = new JSONArray();
@@ -248,7 +248,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("hagga","here2");
+
                 try {
                     JSONArray courses = response.getJSONArray("courses");
 
@@ -285,7 +285,7 @@ public class Login extends AppCompatActivity {
 
                 try {
                     proceed = response.getBoolean("success");
-                    Log.i("hagga","here1");
+
                     if(proceed==false){
                         Toast toast = Toast.makeText(context, "Invalid Username or Password", duration);
                         progressBar.hide();

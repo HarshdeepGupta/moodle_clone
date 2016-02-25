@@ -10,6 +10,8 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 
@@ -68,10 +70,21 @@ public class CourseAssignmentAdapter extends BaseAdapter {
 
         Data_model_course_assignment item = assignmentData.get(position);
 
+        Document doc = Jsoup.parse(item.description);
+        org.jsoup.select.Elements paragraphs = doc.select("p");
+
+        String paragraphs_1 = "";
+        for (int i = 0; i < paragraphs.size();i++){
+            paragraphs_1 += paragraphs.get(i).text() + "\n";
+            if(i==paragraphs.size()-1){
+                paragraphs_1 += paragraphs.get(i).text() ;
+            }
+        }
+
         deadline.setText(item.deadline);
         late_days.setText(String.valueOf(item.late_days_allowed));
         name.setText(item.name);
-        description.setText(item.description);
+        description.setText(paragraphs_1);
         return view;
 
     }

@@ -38,11 +38,8 @@ public class CoursePage extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private String courseCode;
-    private String serverAddress;
-    private String assignmentUrl,threadsUrl,gradesUrl;
-    private static RequestQueue myQueue;
+    ViewPager mViewPager;
+    String courseCode;
     private JSONObject assignment_data;
     private JSONObject threads_data;
     private JSONObject grades_data;
@@ -66,14 +63,7 @@ public class CoursePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        Log.i("hagga", "Called onCreate");
-
-
         Intent intent = getIntent();
-
-        //Initialize the Variables
         courseCode = intent.getStringExtra("CourseCode");
         try{
             assignment_data = new JSONObject(intent.getStringExtra("assignmentData"));
@@ -83,19 +73,11 @@ public class CoursePage extends AppCompatActivity {
         catch (JSONException e){
 
         }
-//        serverAddress = ((Globals) this.getApplication()).getServerAddress();
-//
-//        myQueue = ((Globals) this.getApplication()).getVolleyQueue();
-//
-//        //Make Server Requests to get the data
-//        getDataFromServer();
-
-
-
         setContentView(R.layout.activity_course_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(courseCode.toUpperCase());
 
         // Set up the ViewPager with the sections adapter.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -105,14 +87,7 @@ public class CoursePage extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         //restores session on app closure
         SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
